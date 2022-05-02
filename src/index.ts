@@ -1,9 +1,9 @@
 import KYVE from "@kyve/core";
 import { Signature } from "./types";
 import { fetchBlock } from "./utils";
-import { version } from "../package.json";
+import { name, version } from "../package.json";
 
-process.env.KYVE_RUNTIME = "@kyve/solana";
+process.env.KYVE_RUNTIME = name;
 process.env.KYVE_VERSION = version;
 
 KYVE.metrics.register.setDefaultLabels({

@@ -27,13 +27,12 @@ async function call<T>(
   params: any[],
   signature: Signature
 ): Promise<T> {
-  const { data } = await axios.get<Response<T>>(endpoint, {
-    data: JSON.stringify({
-      jsonrpc: "2.0",
-      id: nanoid(),
-      method,
-      params,
-    }),
+  const { data } = await axios.post<Response<T>>(endpoint, {
+    jsonrpc: "2.0",
+    id: nanoid(),
+    method,
+    params,
+  }, {
     headers: {
       Signature: signature.signature,
       "Public-Key": signature.pubKey,

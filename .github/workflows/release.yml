@@ -33,7 +33,7 @@ jobs:
           path: ./out/solana-macos
       - uses: actions/upload-artifact@v3
         with:
-          name: kyve-solana-win.exe
+          name: kyve-solana-win
           path: ./out/solana-win.exe
 
   docker:
