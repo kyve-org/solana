@@ -1,9 +1,6 @@
-export interface Response<T> {
-  jsonrpc: string;
-  result: T;
-  error: any;
-  id: string;
-}
+export const SLOT_WAS_SKIPPED = (height: number): string => {
+  return `Slot ${height} was skipped`;
+};
 
 export interface Signature {
   signature: string;

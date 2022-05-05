@@ -1,0 +1,48 @@
+diff --git a/node_modules/@solana/web3.js/lib/index.cjs.js b/node_modules/@solana/web3.js/lib/index.cjs.js
+index fb946f8..568c452 100644
+--- a/node_modules/@solana/web3.js/lib/index.cjs.js
++++ b/node_modules/@solana/web3.js/lib/index.cjs.js
+@@ -5373,8 +5373,8 @@ const GetBlockRpcResult = jsonRpcResult(superstruct.nullable(superstruct.type({
+   previousBlockhash: superstruct.string(),
+   parentSlot: superstruct.number(),
+   transactions: superstruct.array(superstruct.type({
+-    transaction: ConfirmedTransactionResult,
+-    meta: superstruct.nullable(ConfirmedTransactionMetaResult)
++    transaction: ParsedConfirmedTransactionResult,
++    meta: superstruct.nullable(ParsedConfirmedTransactionMetaResult)
+   })),
+   rewards: superstruct.optional(superstruct.array(superstruct.type({
+     pubkey: superstruct.string(),
+@@ -6573,7 +6573,7 @@ class Connection {
+ 
+ 
+   async getBlock(slot, opts) {
+-    const args = this._buildArgsAtLeastConfirmed([slot], opts && opts.commitment);
++    const args = this._buildArgsAtLeastConfirmed([slot], opts && opts.commitment, 'jsonParsed');
+ 
+     const unsafeRes = await this._rpcRequest('getBlock', args);
+     const res = superstruct.create(unsafeRes, GetBlockRpcResult);
+@@ -6582,22 +6582,7 @@ class Connection {
+       throw new Error('failed to get confirmed block: ' + res.error.message);
+     }
+ 
+-    const result = res.result;
+-    if (!result) return result;
+-    return { ...result,
+-      transactions: result.transactions.map(({
+-        transaction,
+-        meta
+-      }) => {
+-        const message = new Message(transaction.message);
+-        return {
+-          meta,
+-          transaction: { ...transaction,
+-            message
+-          }
+-        };
+-      })
+-    };
++    return res.result;
+   }
+   /*
+    * Returns the current block height of the node

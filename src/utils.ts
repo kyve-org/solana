@@ -1,50 +1,32 @@
-import { BlockResponse } from "@solana/web3.js";
-import axios from "axios";
-import { nanoid } from "nanoid";
-import { Response, Signature } from "./types";
+import { BlockResponse, Connection } from '@solana/web3.js';
+import { Signature, SLOT_WAS_SKIPPED } from './types';
 
+// NOTE: The response type isn't correct because of our patch.
 export async function fetchBlock(
   endpoint: string,
   height: number,
   signature: Signature
 ): Promise<BlockResponse> {
-  return await call<BlockResponse>(
-    endpoint,
-    "getBlock",
-    [
-      height,
-      {
-        encoding: "jsonParsed",
-      },
-    ],
-    signature
-  );
+  const provider = initialiseSolanaRPC(endpoint, signature);
+
+  return (await provider.getBlock(height))!;
 }
 
-async function call<T>(
+function initialiseSolanaRPC(
   endpoint: string,
-  method: string,
-  params: any[],
   signature: Signature
-): Promise<T> {
-  const { data } = await axios.post<Response<T>>(
-    endpoint,
-    {
-      jsonrpc: "2.0",
-      id: nanoid(),
-      method,
-      params,
+): Connection {
+  return new Connection(endpoint, {
+    httpHeaders: {
+      'Content-Type': 'application/json',
+      Signature: signature.signature,
+      'Public-Key': signature.pubKey,
+      'Pool-ID': signature.poolId,
+      Timestamp: signature.timestamp,
     },
-    {
-      headers: {
-        Signature: signature.signature,
-        "Public-Key": signature.pubKey,
-        "Pool-ID": signature.poolId,
-        Timestamp: signature.timestamp,
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  });
+}
 
-  return data.result;
+export function wasSlotSkipped(err: any, height: number): boolean {
+  return new Error(err).message.includes(SLOT_WAS_SKIPPED(height));
 }

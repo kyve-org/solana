@@ -1,7 +1,7 @@
-import KYVE from "@kyve/core";
-import { Signature } from "./types";
-import { fetchBlock } from "./utils";
-import { name, version } from "../package.json";
+import KYVE from '@kyve/core';
+import { Signature } from './types';
+import { fetchBlock, wasSlotSkipped } from './utils';
+import { name, version } from '../package.json';
 
 process.env.KYVE_RUNTIME = name;
 process.env.KYVE_VERSION = version;
@@ -21,6 +21,8 @@ class KyveSolana extends KYVE {
         await this.getSignature()
       );
     } catch (err) {
+      if (wasSlotSkipped(err, key)) return { key, value: null };
+
       this.logger.warn(
         `⚠️  EXTERNAL ERROR: Failed to fetch block ${key}. Retrying ...`
       );
