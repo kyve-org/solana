@@ -1,4 +1,4 @@
-import KYVE from '@kyve/core';
+import KYVE, { Item } from '@kyve/core';
 import { Signature } from './types';
 import { fetchBlock, wasSlotSkipped } from './utils';
 import { name, version } from '../package.json';
@@ -11,26 +11,36 @@ KYVE.metrics.register.setDefaultLabels({
 });
 
 class KyveSolana extends KYVE {
-  public async getDataItem(key: number): Promise<{ key: number; value: any }> {
+  public async getDataItem(key: string): Promise<Item> {
     let block;
 
     try {
       block = await fetchBlock(
         this.pool.config.rpc,
-        key,
+        +key,
         await this.getSignature()
       );
     } catch (err) {
-      if (wasSlotSkipped(err, key)) return { key, value: null };
+      if (wasSlotSkipped(err, +key)) return { key, value: null };
 
-      this.logger.warn(
-        `⚠️  EXTERNAL ERROR: Failed to fetch block ${key}. Retrying ...`
-      );
+      this.logger.warn(`Failed to fetch block ${key}. Retrying ...`);
 
       throw err;
     }
 
     return { key, value: block };
+  }
+
+  public async getNextKey(key: string): Promise<string> {
+    if (key) {
+      return (parseInt(key) + 1).toString();
+    }
+
+    return '0';
+  }
+
+  public async formatValue(value: any): Promise<string> {
+    return value.blockhash;
   }
 
   private async getSignature(): Promise<Signature> {
