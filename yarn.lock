@@ -501,14 +501,14 @@
     big-integer "^1.6.48"
     utility-types "^3.10.0"
 
-"@kyve/core@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@kyve/core/-/core-1.2.0.tgz#533f6af3c62b293ee1a366bc25f684fc1d6316d8"
-  integrity sha512-BU45zsBQvfwCLaryFI9auCzYL8bl8hZrmYc1pUrUcd8SLfV4DNQKRTgIbK39VtrMlAVJRkXKWnXdrpe6h3Zsvg==
+"@kyve/core@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@kyve/core/-/core-1.2.1.tgz#cd47838662e060a0a42a0c7fc9226a6b92693823"
+  integrity sha512-WJylVG3kAfbhOCJBOH6D/v9sgfF1UqAkS95LLstCRNNaVH4fMGtaDI5WGpxmK3czqwVXy3opFVrG1NV3qWuaJw==
   dependencies:
     "@cosmjs/proto-signing" "^0.27.1"
     "@cosmjs/stargate" "^0.27.1"
-    "@kyve/sdk" "1.2.0"
+    "@kyve/sdk" "1.2.1"
     "@types/cli-progress" "^3.9.2"
     "@types/jsonfile" "^6.0.1"
     arweave "^1.10.17"
@@ -525,10 +525,10 @@
     tslog "^3.2.2"
     unique-names-generator "^4.6.0"
 
-"@kyve/sdk@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@kyve/sdk/-/sdk-1.2.0.tgz#c8d373e92028b62888965fd5fafd73e843bcda52"
-  integrity sha512-b+SAtpnnqs5V6HLZWVdY7jETOwy4oWi0cDRdte4CxwvtYFcUwcoy/XbGb2oNWXyJCnycXarpkm9pigAk2xyakA==
+"@kyve/sdk@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@kyve/sdk/-/sdk-1.2.1.tgz#5e066f5d4a731f21db90b678f52f896b63425621"
+  integrity sha512-ztB8BXwi03DSxltSx+KgQ/qUTn+vO1ljnZRflUOsm0rsmKafgIuGNIY2Mxn6Cex+Q8tCaRiYc5IFVLqQku4EPg==
   dependencies:
     "@cosmjs/amino" "0.28.3"
     "@cosmjs/crypto" "0.27.1"
