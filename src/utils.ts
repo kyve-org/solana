@@ -5,25 +5,16 @@ import { Signature, SLOT_WAS_SKIPPED } from './types';
 export async function fetchBlock(
   endpoint: string,
   height: number,
-  signature: Signature
+  headers: any
 ): Promise<BlockResponse> {
-  const provider = initialiseSolanaRPC(endpoint, signature);
+  const provider = initialiseSolanaRPC(endpoint, headers);
 
   return (await provider.getBlock(height))!;
 }
 
-function initialiseSolanaRPC(
-  endpoint: string,
-  signature: Signature
-): Connection {
-  return new Connection(endpoint, {
-    httpHeaders: {
-      'Content-Type': 'application/json',
-      Signature: signature.signature,
-      'Public-Key': signature.pubKey,
-      'Pool-ID': signature.poolId,
-      Timestamp: signature.timestamp,
-    },
+function initialiseSolanaRPC(endpoint: string, headers: any): Connection {
+  return new Connection('https://proxy.alpha.kyve.network/solana', {
+    httpHeaders: headers,
   });
 }
 
