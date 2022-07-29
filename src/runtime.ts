@@ -9,7 +9,7 @@ export default class Solana implements IRuntime {
   public async getDataItem(core: Node, key: string): Promise<DataItem> {
     let block;
 
-    const headers = this.generateCoinbaseCloudHeaders(core);
+    const headers = await this.generateCoinbaseCloudHeaders(core);
 
     try {
       block = await fetchBlock(core.poolConfig.rpc, +key, headers);

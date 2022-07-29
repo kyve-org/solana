@@ -1,8 +1,8 @@
 diff --git a/node_modules/@solana/web3.js/lib/index.cjs.js b/node_modules/@solana/web3.js/lib/index.cjs.js
-index fb946f8..568c452 100644
+index 229d211..13ae768 100644
 --- a/node_modules/@solana/web3.js/lib/index.cjs.js
 +++ b/node_modules/@solana/web3.js/lib/index.cjs.js
-@@ -5373,8 +5373,8 @@ const GetBlockRpcResult = jsonRpcResult(superstruct.nullable(superstruct.type({
+@@ -5790,8 +5790,8 @@ const GetBlockRpcResult = jsonRpcResult(superstruct.nullable(superstruct.type({
    previousBlockhash: superstruct.string(),
    parentSlot: superstruct.number(),
    transactions: superstruct.array(superstruct.type({
@@ -13,17 +13,17 @@ index fb946f8..568c452 100644
    })),
    rewards: superstruct.optional(superstruct.array(superstruct.type({
      pubkey: superstruct.string(),
-@@ -6573,7 +6573,7 @@ class Connection {
+@@ -7102,7 +7102,7 @@ class Connection {
+       config
+     } = extractCommitmentFromConfig(rawConfig);
  
+-    const args = this._buildArgsAtLeastConfirmed([slot], commitment, undefined
++    const args = this._buildArgsAtLeastConfirmed([slot], commitment, 'jsonParsed'
+     /* encoding */
+     , config);
  
-   async getBlock(slot, opts) {
--    const args = this._buildArgsAtLeastConfirmed([slot], opts && opts.commitment);
-+    const args = this._buildArgsAtLeastConfirmed([slot], opts && opts.commitment, 'jsonParsed');
- 
-     const unsafeRes = await this._rpcRequest('getBlock', args);
-     const res = superstruct.create(unsafeRes, GetBlockRpcResult);
-@@ -6582,22 +6582,7 @@ class Connection {
-       throw new Error('failed to get confirmed block: ' + res.error.message);
+@@ -7113,22 +7113,7 @@ class Connection {
+       throw new SolanaJSONRPCError(res.error, 'failed to get confirmed block');
      }
  
 -    const result = res.result;
